@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Game_Store.Models;
+
 namespace Game_Store
 {
     public class Program
@@ -8,6 +11,16 @@ namespace Game_Store
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<GameContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("GameContext")));
+
+            builder.Services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.AppendTrailingSlash = true;
+            }
+            );
 
             var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using Game_Store.Models;
 using Microsoft.AspNetCore.Mvc;
+using SQLitePCL;
 using System.Diagnostics;
 
 namespace Game_Store.Controllers
@@ -8,14 +9,12 @@ namespace Game_Store.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        private GameContext context { get; set; }
+        public HomeController(GameContext ctx) => context = ctx;
         public IActionResult Index()
         {
-            return View();
+            var games = context.Games.OrderBy(g => g.Title).ToList();    
+            return View(games);
         }
 
         public IActionResult About()
